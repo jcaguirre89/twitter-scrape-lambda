@@ -141,6 +141,6 @@ def handler(event, context):
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json",
         },
-        "body": data
+        "body": json.dumps(data)
     }
     return out
