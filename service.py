@@ -62,7 +62,7 @@ def main(api, comma_sep_terms, lang='en', start_id='1064630780150239238'):
     for tweet in get_tweets(api, start_id, parameters):
         tweet_record = _process_tweet(tweet)
         output.append(tweet_record)
-        # Only return 1000 latest tweets
+        # Only return 10xx latest tweets
         if len(output) > 1000:
             return output
 
@@ -104,7 +104,6 @@ def _process_tweet(tweet):
 
 def handler(event, context):
     # In Production
-
     if event['httpMethod'] == 'OPTIONS':
         return {
             'statusCode': 200,
@@ -121,7 +120,6 @@ def handler(event, context):
     terms = body['terms']
     lang = body['lang']
     print(body)
-    # For development
     #terms = event.get('terms')
     #lang = event.get('lang')
 
@@ -143,6 +141,6 @@ def handler(event, context):
             "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json",
         },
-        "body": json.dumps(data)
+        "body": data
     }
     return out
