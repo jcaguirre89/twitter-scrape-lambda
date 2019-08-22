@@ -105,9 +105,25 @@ def _process_tweet(tweet):
 def handler(event, context):
     # In Production
 
+    if event['httpMethod'] == 'OPTIONS':
+        return {
+            'statusCode': 200,
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "'OPTIONS,POST'",
+                "Content-Type": "application/json",
+            },
+            'body': json.dumps({'message': 'Allowed'})
+        }
+
+    body = json.loads(event['body'])
+    terms = body['terms']
+    lang = body['lang']
+    print(body)
     # For development
-    terms = event.get('terms')
-    lang = event.get('lang')
+    #terms = event.get('terms')
+    #lang = event.get('lang')
 
     api_key = (
         os.environ.get('CONSUMER_KEY'),
