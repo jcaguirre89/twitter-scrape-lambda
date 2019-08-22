@@ -44,7 +44,7 @@ def get_tweets(api, start_id, parameters):
             break
 
 
-def main(api, comma_sep_terms, lang='en', start_id='1932073789481787392'):
+def main(api, comma_sep_terms, lang='en', start_id='1064630780150239238'):
     """
     Run the get_tweets generator and save results to a CSV file
     """
@@ -62,6 +62,9 @@ def main(api, comma_sep_terms, lang='en', start_id='1932073789481787392'):
     for tweet in get_tweets(api, start_id, parameters):
         tweet_record = _process_tweet(tweet)
         output.append(tweet_record)
+        # Only return 1000 latest tweets
+        if len(output) > 1000:
+            return output
 
     return output
 
@@ -100,28 +103,11 @@ def _process_tweet(tweet):
 
 
 def handler(event, context):
-    # Your code goes here!
-    if event['httpMethod'] == 'OPTIONS':
-        return {
-            'statusCode': 200,
-            "headers": {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "Content-Type",
-                "Access-Control-Allow-Methods": "'OPTIONS,POST'",
-                "Content-Type": "application/json",
-            },
-            'body': json.dumps({'message': 'Allowed'})
-        }
-
     # In Production
-    body = json.loads(event['body'])
-    terms = body['terms']
-    lang = body['lang']
-    print(body)
 
     # For development
-    #terms = event.get('terms')
-    #lang = event.get('lang')
+    terms = event.get('terms')
+    lang = event.get('lang')
 
     api_key = (
         os.environ.get('CONSUMER_KEY'),
