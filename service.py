@@ -101,6 +101,17 @@ def _process_tweet(tweet):
 
 def handler(event, context):
     # Your code goes here!
+    if context.httpMethod == 'OPTIONS':
+        return {
+            'statusCode': 200,
+            "headers": {
+                "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json",
+            },
+            'body': json.dumps({'message': 'Allowed'})
+        }
+
     # In Production
     print(event)
     body = json.loads(event['body'])
@@ -118,9 +129,6 @@ def handler(event, context):
         os.environ.get('ACCESS_TOKEN'),
         os.environ.get('ACCESS_TOKEN_SECRET'),
     )
-
-    if not api_key:
-        return {statusCode: 200, "body": "Error"}
 
     api = twitter.Api(*api_key,
                       sleep_on_rate_limit=True,
