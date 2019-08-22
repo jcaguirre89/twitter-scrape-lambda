@@ -101,7 +101,7 @@ def _process_tweet(tweet):
 
 def handler(event, context):
     # Your code goes here!
-    if context.httpMethod == 'OPTIONS':
+    if event['httpMethod'] == 'OPTIONS':
         return {
             'statusCode': 200,
             "headers": {
@@ -113,7 +113,6 @@ def handler(event, context):
         }
 
     # In Production
-    print(event)
     body = json.loads(event['body'])
     terms = body['terms']
     lang = body['lang']
