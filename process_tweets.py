@@ -7,6 +7,10 @@ STOPWORDS = requests.get(
     'https://raw.githubusercontent.com/stopwords-iso/stopwords-es/master/raw/node-stopwords-spanish.txt'
 ).content.decode('utf-8-sig').split('\n')
 
+ENGLISH_STOPWORDS = requests.get(
+    "https://gist.githubusercontent.com/sebleier/554280/raw/7e0e4a1ce04c2bb7bd41089c9821dbcf6d0c786c/NLTK's%2520list%2520of%2520english%2520stopwords"
+).content.decode('utf-8').split('\n')
+
 MORE_STOPWORDS = [
     '',
     'y',
@@ -31,9 +35,18 @@ MORE_STOPWORDS = [
     'tus',
     'vez',
     'hay',
+    'im',
+    'go',
+    'anything',
+    'bring',
+    'back',
+    'lets',
 ]
 
 STOPWORDS.extend(MORE_STOPWORDS)
+STOPWORDS.extend(ENGLISH_STOPWORDS)
+STOPWORDS.extend(list('0123456789'))
+STOPWORDS.extend(list('qwertyuiopasdfghjklzxcvbnm'))
 
 
 def main(data):
